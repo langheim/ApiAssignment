@@ -1,0 +1,185 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace API_Assignment_3.Models
+{
+    public class MediaDbContext : DbContext
+    {
+        /// <summary>
+        /// Overide defult constructor
+        /// </summary>
+        public MediaDbContext([NotNullAttribute] DbContextOptions options) : base(options)
+        {
+        }
+        /// <summary>
+        /// Create Tables
+        /// </summary>
+        public DbSet<Character> Characters { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Franchise> Franchises { get; set; }
+
+        /// <summary>
+        /// Fill tables with ModelBuilder
+        /// </summary>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Add new franchise
+            modelBuilder.Entity<Franchise>().HasData(new Franchise
+            {
+                Id = 1,
+                Name = "The Hobbit",
+                Description = "A curious Hobbit, Bilbo Baggins, journeys to the Lonely Mountain with a vigorous group."
+            });
+            modelBuilder.Entity<Franchise>().HasData(new Franchise
+            {
+                Id = 2,
+                Name = "The Lord of the Rings",
+                Description = "A shy young hobbit named Frodo Baggins inherits a simple gold ring."
+            });
+            modelBuilder.Entity<Franchise>().HasData(new Franchise
+            {
+                Id = 3,
+                Name = "Star Wars",
+                Description = "American epic space opera multimedia franchise created by George Lucas."
+            });
+            /// <summary>
+            /// Add some movies
+            /// </summary>
+            modelBuilder.Entity<Movie>().HasData(new Movie
+            {
+                Id = 1,
+                Title = "The Hobbit : An Unexpected Journey",
+                Genre = "Adventure, Fantasy",
+                Director = "Peter Jackson",
+                ImageURL = "https://www.imdb.com/title/tt0903624/mediaviewer/rm3577719808/?ref_=tt_ov_i",
+                TrailerURL = "https://www.imdb.com/video/vi650683417?playlistId=tt0903624&ref_=tt_ov_vi",
+                FranchiseId = 1,
+                ReleaseYear = "2012",
+            });
+            modelBuilder.Entity<Movie>().HasData(new Movie
+            {
+                Id = 2,
+                Title = "The Hobbit: The Desolation of Smaug",
+                Genre = "Adventure, Fantasy",
+                Director = "Peter Jackson",
+                ImageURL = "https://www.imdb.com/title/tt1170358/mediaviewer/rm2431898112/?ref_=tt_ov_i",
+                TrailerURL = "https://www.imdb.com/video/vi2165155865?playlistId=tt1170358&ref_=tt_pr_ov_vi",
+                FranchiseId = 1,
+                ReleaseYear = "2013",
+            });
+            modelBuilder.Entity<Movie>().HasData(new Movie
+            {
+                Id = 3,
+                Title = "The Lord of the Rings : The Fellowship of the Ring",
+                Genre = "Adventure, Fantasy, Drama",
+                Director = "Peter Jackson",
+                ImageURL = "https://www.imdb.com/title/tt0120737/mediaviewer/rm3592958976/?ref_=tt_ov_i",
+                TrailerURL = "https://www.imdb.com/video/vi2073101337?playlistId=tt0120737&ref_=tt_pr_ov_vi",
+                FranchiseId = 2,
+                ReleaseYear = "2001",
+            });
+            modelBuilder.Entity<Movie>().HasData(new Movie
+            {
+                Id = 4,
+                Title = "Lord Of The Rings: The Two Towers",
+                Genre = "Adventure, Fantasy, Drama",
+                Director = "Peter Jackson",
+                ImageURL = "https://www.imdb.com/title/tt0167261/mediaviewer/rm306845440/?ref_=tt_ov_i",
+                TrailerURL = "https://www.imdb.com/video/vi2073101337?playlistId=tt0167261&ref_=tt_pr_ov_vi",
+                FranchiseId = 2,
+                ReleaseYear = "2002",
+            });
+            modelBuilder.Entity<Movie>().HasData(new Movie
+            {
+                Id = 5,
+                Title = "Star Wars Episode IV: A New Hope",
+                Genre = "Action, Adventure, Fantasy",
+                Director = "George Lucas",
+                ImageURL = "https://www.imdb.com/title/tt0076759/mediaviewer/rm3263717120/?ref_=tt_ov_i",
+                TrailerURL = "https://www.imdb.com/video/vi1317709849?playlistId=tt0076759&ref_=tt_ov_vi",
+                FranchiseId = 3,
+                ReleaseYear = "1977",
+            });
+            modelBuilder.Entity<Movie>().HasData(new Movie
+            {
+                Id = 6,
+                Title = "Star Wars Episode V: The Empire Strikes Back",
+                Genre = "Action, Adventure, Fantasy",
+                Director = "George Lucas",
+                ImageURL = "https://www.imdb.com/title/tt0080684/mediaviewer/rm3114097664/?ref_=tt_ov_i",
+                TrailerURL = "https://www.imdb.com/video/vi221753881?playlistId=tt0080684&ref_=tt_pr_ov_vi",
+                FranchiseId = 3,
+                ReleaseYear = "1980",
+            });
+            /// <summary>
+            /// Add some characters
+            /// </summary>
+            modelBuilder.Entity<Character>().HasData(new Character
+            {
+                Id = 1,
+                FullName = "Bilbo Baggins",
+                Alias = "Bilbo",
+                Gender = "Male",
+                ImageURL = "https://www.imdb.com/title/tt0903624/mediaviewer/rm2780802048?ref_=ttmi_mi_all_sf_3"
+            });
+            modelBuilder.Entity<Character>().HasData(new Character
+            {
+                Id = 2,
+                FullName = "Samwise Gamgee",
+                Alias = "Sam",
+                Gender = "Male",
+                ImageURL = "https://www.imdb.com/title/tt0120737/mediaviewer/rm2628354048?ref_=ttmi_mi_all_sf_7"
+            });
+            modelBuilder.Entity<Character>().HasData(new Character
+            {
+                Id = 3,
+                FullName = "Frodo Baggins",
+                Alias = "Frodo",
+                Gender = "Male",
+                ImageURL = "https://www.imdb.com/title/tt0120737/mediaviewer/rm2645131264?ref_=ttmi_mi_all_sf_6"
+            });
+            modelBuilder.Entity<Character>().HasData(new Character
+            {
+                Id = 4,
+                FullName = "Luke Skywalker",
+                Alias = "Luke",
+                Gender = "Male",
+                ImageURL = "https://www.imdb.com/title/tt0076759/mediaviewer/rm2759417344?ref_=ttmi_mi_all_sf_3"
+            });
+            modelBuilder.Entity<Character>().HasData(new Character
+            {
+                Id = 5,
+                FullName = "Princess Leia Organa",
+                Alias = "Princess Leia",
+                Gender = "Female",
+                ImageURL = "https://www.imdb.com/title/tt0076759/mediaviewer/rm2927189504?ref_=ttmi_mi_all_sf_6"
+            });
+            /// <summary>
+            /// Add relationship to movies and Character 
+            /// </summary>
+            modelBuilder
+                .Entity<Character>()
+                .HasMany(c => c.Movies)
+                .WithMany(m => m.Characters)
+                .UsingEntity<Dictionary<string, object>>("CharacterMovie", r => r.HasOne<Movie>()
+                .WithMany().HasForeignKey("MoviesId"), l => l.HasOne<Character>()
+                .WithMany().HasForeignKey("CharactersId"), ur =>
+                {
+                    ur.HasKey("MoviesId", "CharactersId");
+                    ur.HasData(
+                        new { MoviesId = 1, CharactersId = 1 },
+                        new { MoviesId = 2, CharactersId = 1 },
+                        new { MoviesId = 3, CharactersId = 3 },
+                        new { MoviesId = 3, CharactersId = 2 },
+                        new { MoviesId = 4, CharactersId = 3 },
+                        new { MoviesId = 5, CharactersId = 4 },
+                        new { MoviesId = 5, CharactersId = 5 },
+                        new { MoviesId = 6, CharactersId = 4 });
+                });
+        }
+    }
+}
