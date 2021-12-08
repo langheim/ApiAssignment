@@ -1,11 +1,9 @@
-﻿using System;
+﻿using API_Assignment_3.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API_Assignment_3.Models;
 
 namespace API_Assignment_3.Controllers
 {
