@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace API_Assignment_3
 {
@@ -26,19 +28,15 @@ namespace API_Assignment_3
             services.AddControllers();
             // Add AutoMapper
             services.AddAutoMapper(typeof(Startup));
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Assignment_3", Version = "v1" });
-            });
             // Add connection from appsettings.json
             services.AddDbContext<MediaDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             // Add swagger doc
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1.1", new OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "APIAssignment3",
-                    Version = "v1.1",
+                    Title = "API Assignment 3",
+                    Version = "v1",
                     Description = "API Assignment 3 at NorOff",
                     TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
@@ -54,6 +52,10 @@ namespace API_Assignment_3
                     }
 
                 });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
             });
 
         }

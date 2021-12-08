@@ -1,4 +1,4 @@
-﻿using API_Assignment_3.Models;
+﻿using API_Assignment_3.Models.Domain;
 using API_Assignment_3.Models.DTO;
 using AutoMapper;
 using System.Linq;

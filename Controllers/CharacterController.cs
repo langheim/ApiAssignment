@@ -1,33 +1,49 @@
 ﻿using API_Assignment_3.Models;
+using API_Assignment_3.Models.Domain;
+using API_Assignment_3.Models.DTO;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace API_Assignment_3.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/character")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class CharacterController : ControllerBase
     {
         private readonly MediaDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CharacterController(MediaDbContext context)
+        public CharacterController(MediaDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // GET: api/Character
+        /// <summary>
+        /// Returns a list of all characters
+        /// </summary>
+        /// <returns>Returns a list of all characters</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters()
+        public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharacters()
         {
-            return await _context.Characters.ToListAsync();
+            return _mapper.Map<List<CharacterReadDTO>>(await _context.Characters.Include(c => c.Movies).ToListAsync());
         }
 
-        // GET: api/Character/5
+        /// <summary>
+        /// Get character by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Character>> GetCharacter(int id)
+        public async Task<ActionResult<CharacterReadDTO>> GetCharacter(int id)
         {
             var character = await _context.Characters.FindAsync(id);
 
@@ -36,20 +52,28 @@ namespace API_Assignment_3.Controllers
                 return NotFound();
             }
 
-            return character;
+            await _context.Entry(character).Collection(i => i.Movies).LoadAsync();
+           
+            return _mapper.Map<CharacterReadDTO>(character);
+
         }
 
-        // PUT: api/Character/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update a character by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="character"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCharacter(int id, Character character)
+        public async Task<IActionResult> PutCharacter(int id, CharacterEditDTO character)
         {
             if (id != character.Id)
             {
                 return BadRequest();
             }
-
-            _context.Entry(character).State = EntityState.Modified;
+             
+            Character chars = _mapper.Map<Character>(character);
+            _context.Entry(chars).State = EntityState.Modified;
 
             try
             {
@@ -70,18 +94,26 @@ namespace API_Assignment_3.Controllers
             return NoContent();
         }
 
-        // POST: api/Character
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add a new character
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Character>> PostCharacter(Character character)
+        public async Task<ActionResult<Character>> PostCharacter(CharacterCreateDTO character)
         {
-            _context.Characters.Add(character);
+            Character characterAdd = _mapper.Map<Character>(character);
+            _context.Characters.Add(characterAdd);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCharacter", new { id = character.Id }, character);
+            return CreatedAtAction("GetCharacter", new { id = characterAdd.Id }, _mapper.Map<CharacterReadDTO>(characterAdd));
         }
 
-        // DELETE: api/Character/5
+        /// <summary>
+        /// Delete a character by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCharacter(int id)
         {

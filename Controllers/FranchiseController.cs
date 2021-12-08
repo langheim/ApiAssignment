@@ -1,33 +1,49 @@
 ﻿using API_Assignment_3.Models;
+using API_Assignment_3.Models.Domain;
+using API_Assignment_3.Models.DTO;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace API_Assignment_3.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/franchise")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class FranchiseController : ControllerBase
     {
         private readonly MediaDbContext _context;
+        private readonly IMapper _mapper;
 
-        public FranchiseController(MediaDbContext context)
+        public FranchiseController(MediaDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // GET: api/Franchise
+        /// <summary>
+        /// Get all franchises
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Franchise>>> GetFranchises()
+        public async Task<ActionResult<IEnumerable<FranchiseReadDTO>>> GetFranchises()
         {
-            return await _context.Franchises.ToListAsync();
+            return _mapper.Map<List<FranchiseReadDTO>>(await _context.Franchises.ToListAsync());
         }
 
-        // GET: api/Franchise/5
+        /// <summary>
+        /// Get franchise by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Franchise>> GetFranchise(int id)
+        public async Task<ActionResult<FranchiseReadDTO>> GetFranchise(int id)
         {
             var franchise = await _context.Franchises.FindAsync(id);
 
@@ -36,20 +52,25 @@ namespace API_Assignment_3.Controllers
                 return NotFound();
             }
 
-            return franchise;
+            return _mapper.Map<FranchiseReadDTO>(franchise);
         }
 
-        // PUT: api/Franchise/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update a franchise by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="franchise"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFranchise(int id, Franchise franchise)
+        public async Task<IActionResult> PutFranchise(int id, FranchiseReadDTO franchise)
         {
             if (id != franchise.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(franchise).State = EntityState.Modified;
+            Franchise frans = _mapper.Map<Franchise>(franchise);
+            _context.Entry(frans).State = EntityState.Modified;
 
             try
             {
@@ -70,18 +91,26 @@ namespace API_Assignment_3.Controllers
             return NoContent();
         }
 
-        // POST: api/Franchise
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add anew franchise
+        /// </summary>
+        /// <param name="franchise"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Franchise>> PostFranchise(Franchise franchise)
+        public async Task<ActionResult<Franchise>> PostFranchise(FranchiseCreateDTO franchise)
         {
-            _context.Franchises.Add(franchise);
+            Franchise franchiseAdd = _mapper.Map<Franchise>(franchise);
+            _context.Franchises.Add(franchiseAdd);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFranchise", new { id = franchise.Id }, franchise);
+            return CreatedAtAction("GetFranchise", new { id = franchiseAdd.Id }, franchise);
         }
 
-        // DELETE: api/Franchise/5
+        /// <summary>
+        /// Delete a franchise by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFranchise(int id)
         {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API_Assignment_3.Models
+namespace API_Assignment_3.Models.Domain
 {
     // Table Name
     [Table("Franchise")]
