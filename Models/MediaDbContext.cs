@@ -9,22 +9,15 @@ namespace API_Assignment_3.Models
 {
     public class MediaDbContext : DbContext
     {
-        /// <summary>
-        /// Overide defult constructor
-        /// </summary>
+        // Overide defult constructor
         public MediaDbContext([NotNullAttribute] DbContextOptions options) : base(options)
         {
         }
-        /// <summary>
-        /// Create Tables
-        /// </summary>
+        // Create Tables
         public DbSet<Character> Characters { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Franchise> Franchises { get; set; }
-
-        /// <summary>
-        /// Fill tables with ModelBuilder
-        /// </summary>
+        // Fill tables with ModelBuilder
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Add new franchise
@@ -46,9 +39,7 @@ namespace API_Assignment_3.Models
                 Name = "Star Wars",
                 Description = "American epic space opera multimedia franchise created by George Lucas."
             });
-            /// <summary>
-            /// Add some movies
-            /// </summary>
+            // Add some movies
             modelBuilder.Entity<Movie>().HasData(new Movie
             {
                 Id = 1,
@@ -115,9 +106,7 @@ namespace API_Assignment_3.Models
                 FranchiseId = 3,
                 ReleaseYear = "1980",
             });
-            /// <summary>
-            /// Add some characters
-            /// </summary>
+            // Add some characters
             modelBuilder.Entity<Character>().HasData(new Character
             {
                 Id = 1,
@@ -158,9 +147,7 @@ namespace API_Assignment_3.Models
                 Gender = "Female",
                 ImageURL = "https://www.imdb.com/title/tt0076759/mediaviewer/rm2927189504?ref_=ttmi_mi_all_sf_6"
             });
-            /// <summary>
-            /// Add relationship to movies and Character 
-            /// </summary>
+            // Add relationship to movies and Character 
             modelBuilder
                 .Entity<Character>()
                 .HasMany(c => c.Movies)

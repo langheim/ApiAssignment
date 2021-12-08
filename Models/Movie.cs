@@ -7,19 +7,13 @@ using System.Threading.Tasks;
 
 namespace API_Assignment_3.Models
 {
-    /// <summary>
-    /// Table Name
-    /// </summary>
+    // Table Name
     [Table("Movie")]
     public class Movie
     {
-        /// <summary>
-        /// Add PrimaryKey
-        /// </summary>
+        // Add PrimaryKey
         public int Id { get; set; }
-        /// <summary>
-        /// DataFields
-        /// </summary>
+        // DataFields
         [Required]
         [MaxLength(50)]
         public string Title { get; set; }
@@ -35,9 +29,7 @@ namespace API_Assignment_3.Models
         public string ImageURL { get; set; }
         [MaxLength(250)]
         public string TrailerURL { get; set; }
-        /// <summary>
-        /// Add Relations
-        /// </summary>
+        // Add Relations
         public ICollection<Character> Characters { get; set; }
         public int FranchiseId { get; set; }
         public Franchise Franchise { get; set; }

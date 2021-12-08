@@ -7,27 +7,19 @@ using System.Threading.Tasks;
 
 namespace API_Assignment_3.Models
 {
-    /// <summary>
-    /// Table Name
-    /// </summary>
+    // Table Name
     [Table("Franchise")]
     public class Franchise
     {
-        /// <summary>
-        /// Add PrimaryKey
-        /// </summary>
+        // Add PrimaryKey
         public int Id { get; set; }
-        /// <summary>
-        /// DataFields
-        /// </summary>
+        // DataFields
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
         [MaxLength(500)]
         public string Description { get; set; }
-        /// <summary>
-        /// Add Relations
-        /// </summary>
+        // Add Relations
         public ICollection<Movie> Movies { get; set; }
 
     }

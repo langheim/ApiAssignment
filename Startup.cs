@@ -11,7 +11,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace API_Assignment_3
@@ -30,12 +32,38 @@ namespace API_Assignment_3
         {
 
             services.AddControllers();
+            // Add AutoMapper
+            services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Assignment_3", Version = "v1" });
             });
             // Add connection from appsettings.json
             services.AddDbContext<MediaDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            // Add swagger doc
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1.1", new OpenApiInfo
+                {
+                    Title = "APIAssignment3",
+                    Version = "v1.1",
+                    Description = "API Assignment 3 at NorOff",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Mattis Langheim",
+                        Email = "mattis@noneofurbiz.com",
+                        Url = new Uri("https://github.com/langheim/"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under MIT",
+                        Url = new Uri("https://opensource.org/licenses/MIT"),
+                    }
+
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
