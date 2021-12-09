@@ -56,6 +56,40 @@ namespace API_Assignment_3.Controllers
         }
 
         /// <summary>
+        /// Get all movies by franchice ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/movies")]
+        public async Task<ActionResult<FranchiseMovieDTO>> GetMoviesByFranchise(int id)
+        {
+            var franchise = await _context.Franchises.FindAsync(id);
+            
+            if (franchise == null)
+            {
+                return NotFound();
+            }
+            await _context.Entry(franchise).Collection(c => c.Movies).LoadAsync();
+            return _mapper.Map<FranchiseMovieDTO>(franchise);
+            
+        }
+
+        /// <summary>
+        /// Get all characters by franchice ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/character")]
+        public async Task<ActionResult<FranchiseCharactersDTO>> GetCharacterByFranchise(int id)
+        {
+            var movie = await _context.Movies.Where(c => c.FranchiseId == id).FirstAsync();
+                                      
+            await _context.Entry(movie).Collection(i => i.Characters).LoadAsync();
+
+            return _mapper.Map<FranchiseCharactersDTO>(movie);
+        }
+
+        /// <summary>
         /// Update a franchise by ID
         /// </summary>
         /// <param name="id"></param>
@@ -69,8 +103,8 @@ namespace API_Assignment_3.Controllers
                 return BadRequest();
             }
 
-            Franchise frans = _mapper.Map<Franchise>(franchise);
-            _context.Entry(frans).State = EntityState.Modified;
+            Franchise franc = _mapper.Map<Franchise>(franchise);
+            _context.Entry(franc).State = EntityState.Modified;
 
             try
             {
@@ -92,18 +126,18 @@ namespace API_Assignment_3.Controllers
         }
 
         /// <summary>
-        /// Add anew franchise
+        /// Add a new franchise
         /// </summary>
         /// <param name="franchise"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Franchise>> PostFranchise(FranchiseCreateDTO franchise)
         {
-            Franchise franchiseAdd = _mapper.Map<Franchise>(franchise);
-            _context.Franchises.Add(franchiseAdd);
+            Franchise addFranchise = _mapper.Map<Franchise>(franchise);
+            _context.Franchises.Add(addFranchise);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFranchise", new { id = franchiseAdd.Id }, franchise);
+            return CreatedAtAction("GetFranchise", new { id = addFranchise.Id }, franchise);
         }
 
         /// <summary>

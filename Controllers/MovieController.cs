@@ -34,7 +34,7 @@ namespace API_Assignment_3.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMovies()
         {
-            return _mapper.Map<List<MovieReadDTO>>(await _context.Movies.Include(c => c.Characters).ToListAsync());
+            return _mapper.Map<List<MovieReadDTO>>(await _context.Movies.ToListAsync());
         }
 
         /// <summary>
@@ -52,10 +52,27 @@ namespace API_Assignment_3.Controllers
                 return NotFound();
             }
 
-            await _context.Entry(movie).Collection(i => i.Characters).LoadAsync();
             return _mapper.Map<MovieReadDTO>(movie);
         }
 
+        /// <summary>
+        /// Get all characters in a movie by movie ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/movie")]
+        public async Task<ActionResult<MovieCharactersDTO>> GetMoviesWithCharacter(int id)
+        {
+            var movie = await _context.Movies.FindAsync(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            await _context.Entry(movie).Collection(c => c.Characters).LoadAsync();
+            return _mapper.Map<MovieCharactersDTO>(movie);
+        }
         /// <summary>
         /// Update movie by ID
         /// </summary>

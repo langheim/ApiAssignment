@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace API_Assignment_3.Models.DTO
 {
-    public class MovieReadDTO
+    public class MovieCharactersDTO
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -11,6 +14,7 @@ namespace API_Assignment_3.Models.DTO
         public string Director { get; set; }
         public string ImageURL { get; set; }
         public string TrailerURL { get; set; }
+        public List<string> Characters { get; set; }
         public int FranchiseId { get; set; }
     }
 }

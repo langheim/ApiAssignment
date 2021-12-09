@@ -145,7 +145,7 @@ namespace API_Assignment_3.Models
                 Gender = "Female",
                 ImageURL = "https://www.imdb.com/title/tt0076759/mediaviewer/rm2927189504?ref_=ttmi_mi_all_sf_6"
             });
-            // Add relationship to movies and Character 
+            // Create relationship to movies and Character 
             modelBuilder
                 .Entity<Character>()
                 .HasMany(c => c.Movies)
