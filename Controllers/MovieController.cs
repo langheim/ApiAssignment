@@ -60,7 +60,7 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}/movie")]
+        [HttpGet("{id}/characters")]
         public async Task<ActionResult<MovieCharactersDTO>> GetMoviesWithCharacter(int id)
         {
             var movie = await _context.Movies.FindAsync(id);
@@ -109,28 +109,33 @@ namespace API_Assignment_3.Controllers
             return NoContent();
         }
         /// <summary>
-        /// Add character to a movie
+        /// Update character in a movie
         /// </summary>
         /// <param name="id"></param>
         /// <param name="characters"></param>
         /// <returns></returns>
-        [HttpPut("{id}/characters")]
+        [HttpPut("{id}/characterUpdate")]
         public async Task<IActionResult> UpdateCharactersInMovie(int id, List<int> characters)
         {
             if (!MovieExists(id))
             {
                 return NotFound();
             }
-            Movie movieToUpdateCharacters = await _context.Movies.Include(c => c.Characters).Where(c => c.Id == id).FirstAsync();
-            List<Character> charas = new();
-            foreach (int chaId in characters)
+
+            Movie charactersInMovie = await _context.Movies
+                .Include(c => c.Characters)
+                .Where(c => c.Id == id)
+                .FirstAsync();
+
+            List<Character> chars = new();
+            foreach (int characterId in characters)
             {
-                Character chara = await _context.Characters.FindAsync(chaId);
-                if (chara == null)
+                Character chararcters = await _context.Characters.FindAsync(characterId);
+                if (characters == null)
                     return BadRequest("Character does not exist!");
-                charas.Add(chara);
+                chars.Add(chararcters);
             }
-            movieToUpdateCharacters.Characters = charas;
+            charactersInMovie.Characters = chars;
 
             try
             {

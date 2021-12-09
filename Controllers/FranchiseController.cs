@@ -79,7 +79,7 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}/character")]
+        [HttpGet("{id}/characters")]
         public async Task<ActionResult<FranchiseCharactersDTO>> GetCharacterByFranchise(int id)
         {
             var movie = await _context.Movies.Where(c => c.FranchiseId == id).FirstAsync();
@@ -126,12 +126,53 @@ namespace API_Assignment_3.Controllers
         }
 
         /// <summary>
+        /// Update movie in franchice
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="movies"></param>
+        /// <returns></returns>
+        [HttpPut("{id}/movieUpdate")]
+        public async Task<IActionResult> MovieFranchiseUpdate(int id, List<int> movies)
+        {
+            if (!FranchiseExists(id))
+            {
+                return NotFound();
+            }
+
+            Franchise movieGet = await _context.Franchises
+                .Include(c => c.Movies)
+                .Where(c => c.Id == id)
+                .FirstAsync();
+            
+            List<Movie> moviesList = new();
+            foreach (int movId in movies)
+            {
+                Movie movieList = await _context.Movies.FindAsync(movId);
+                if (movieList == null)
+                    return BadRequest("No movie found with this ID!");
+                moviesList.Add(movieList);
+            }
+            movieGet.Movies = moviesList;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
         /// Add a new franchise
         /// </summary>
         /// <param name="franchise"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Franchise>> PostFranchise(FranchiseCreateDTO franchise)
+        public async Task<ActionResult<FranchiseCreateDTO>> PostFranchise(FranchiseCreateDTO franchise)
         {
             Franchise addFranchise = _mapper.Map<Franchise>(franchise);
             _context.Franchises.Add(addFranchise);
