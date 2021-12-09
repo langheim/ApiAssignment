@@ -64,14 +64,14 @@ namespace API_Assignment_3.Controllers
         public async Task<ActionResult<FranchiseMovieDTO>> GetMoviesByFranchise(int id)
         {
             var franchise = await _context.Franchises.FindAsync(id);
-            
+
             if (franchise == null)
             {
                 return NotFound();
             }
             await _context.Entry(franchise).Collection(c => c.Movies).LoadAsync();
             return _mapper.Map<FranchiseMovieDTO>(franchise);
-            
+
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace API_Assignment_3.Controllers
         public async Task<ActionResult<FranchiseCharactersDTO>> GetCharacterByFranchise(int id)
         {
             var movie = await _context.Movies.Where(c => c.FranchiseId == id).FirstAsync();
-                                      
+
             await _context.Entry(movie).Collection(i => i.Characters).LoadAsync();
 
             return _mapper.Map<FranchiseCharactersDTO>(movie);
@@ -143,7 +143,7 @@ namespace API_Assignment_3.Controllers
                 .Include(c => c.Movies)
                 .Where(c => c.Id == id)
                 .FirstAsync();
-            
+
             List<Movie> moviesList = new();
             foreach (int movId in movies)
             {

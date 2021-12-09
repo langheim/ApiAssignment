@@ -53,7 +53,7 @@ namespace API_Assignment_3.Controllers
             }
 
             await _context.Entry(character).Collection(i => i.Movies).LoadAsync();
-           
+
             return _mapper.Map<CharacterReadDTO>(character);
 
         }
@@ -71,7 +71,7 @@ namespace API_Assignment_3.Controllers
             {
                 return BadRequest();
             }
-             
+
             Character chars = _mapper.Map<Character>(character);
             _context.Entry(chars).State = EntityState.Modified;
 
