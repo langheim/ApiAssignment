@@ -1,4 +1,5 @@
 using API_Assignment_3.Models;
+using API_Assignment_3.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +29,12 @@ namespace API_Assignment_3
             services.AddControllers();
             // Add AutoMapper
             services.AddAutoMapper(typeof(Startup));
-            // Add connection from appsettings.json
-            services.AddDbContext<MediaDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            // Add connection from appsettings.json // Set to production to work with Azure (ConnectionString has been removed from appsettings and added to Azure)
+            services.AddDbContext<MediaDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Production")));
+            // Add service connection to MovieController 
+            services.AddScoped(typeof(MovieService));
+            // Add service connection to FranchiseController 
+            services.AddScoped(typeof(FranchiseService));
             // Add swagger doc
             services.AddSwaggerGen(c =>
             {
@@ -52,6 +57,7 @@ namespace API_Assignment_3
                     }
 
                 });
+                // Set the comments path for the Swagger
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
@@ -66,10 +72,12 @@ namespace API_Assignment_3
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Assignment_3 v1"));
+              
             }
-
+            // Added swagger so it works in productive API
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Assignment_3 v1"));
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

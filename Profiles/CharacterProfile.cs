@@ -9,14 +9,11 @@ namespace API_Assignment_3.Profiles
     {
         public CharacterProfile()
         {
-            // Character->CharacterReadDTO
-            CreateMap<Character, CharacterReadDTO>()
-            // Turning related movies into int arrays
-            .ForMember(cdto => cdto.Movies, opt => opt
-            .MapFrom(c => c.Movies.Select(c => c.Id).ToArray()));
-            // CHaracterCreateDTO->Character
+            // Create a map for Character to CharacterReadDTO and sending it to an Array
+            CreateMap<Character, CharacterReadDTO>().ForMember(cdto => cdto.Movies, opt => opt.MapFrom(c => c.Movies.Select(c => c.Id).ToArray()));
+            // Create map for CharacterCreateDTO to Character
             CreateMap<CharacterCreateDTO, Character>();
-            // CharacterEditDTO->Character
+            // Create map for CharacterEditDTO to Character
             CreateMap<CharacterEditDTO, Character>();
         }
     }

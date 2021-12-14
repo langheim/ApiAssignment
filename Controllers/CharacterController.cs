@@ -46,7 +46,7 @@ namespace API_Assignment_3.Controllers
         public async Task<ActionResult<CharacterReadDTO>> GetCharacter(int id)
         {
             var character = await _context.Characters.FindAsync(id);
-
+            // Check if exists
             if (character == null)
             {
                 return NotFound();
@@ -67,6 +67,7 @@ namespace API_Assignment_3.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCharacter(int id, CharacterEditDTO character)
         {
+            // Check if character ID exists
             if (id != character.Id)
             {
                 return BadRequest();
@@ -74,7 +75,7 @@ namespace API_Assignment_3.Controllers
 
             Character chars = _mapper.Map<Character>(character);
             _context.Entry(chars).State = EntityState.Modified;
-
+            // Try to update
             try
             {
                 await _context.SaveChangesAsync();
@@ -118,6 +119,7 @@ namespace API_Assignment_3.Controllers
         public async Task<IActionResult> DeleteCharacter(int id)
         {
             var character = await _context.Characters.FindAsync(id);
+            // Check if exists
             if (character == null)
             {
                 return NotFound();

@@ -1,9 +1,11 @@
 ﻿using API_Assignment_3.Models;
 using API_Assignment_3.Models.Domain;
 using API_Assignment_3.Models.DTO;
+using API_Assignment_3.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
@@ -18,13 +20,17 @@ namespace API_Assignment_3.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class MovieController : ControllerBase
     {
+        // link to DbContext
         private readonly MediaDbContext _context;
+        // injecting services
+        private readonly MovieService _movieService;
         private readonly IMapper _mapper;
 
-        public MovieController(MediaDbContext context, IMapper mapper)
+        public MovieController(MediaDbContext context, IMapper mapper, MovieService movieService)
         {
             _context = context;
             _mapper = mapper;
+            _movieService = movieService;
         }
 
         /// <summary>
@@ -46,7 +52,7 @@ namespace API_Assignment_3.Controllers
         public async Task<ActionResult<MovieReadDTO>> GetMovie(int id)
         {
             var movie = await _context.Movies.FindAsync(id);
-
+            // Check if movie ID exists
             if (movie == null)
             {
                 return NotFound();
@@ -64,7 +70,7 @@ namespace API_Assignment_3.Controllers
         public async Task<ActionResult<MovieCharactersDTO>> GetMoviesWithCharacter(int id)
         {
             var movie = await _context.Movies.FindAsync(id);
-
+            // Check if movie ID exists
             if (movie == null)
             {
                 return NotFound();
@@ -82,6 +88,7 @@ namespace API_Assignment_3.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, MovieEditDTO movie)
         {
+            // Check if movie ID exists
             if (id != movie.Id)
             {
                 return BadRequest();
@@ -89,7 +96,7 @@ namespace API_Assignment_3.Controllers
 
             Movie movies = _mapper.Map<Movie>(movie);
             _context.Entry(movies).State = EntityState.Modified;
-
+            // Try to update
             try
             {
                 await _context.SaveChangesAsync();
@@ -117,35 +124,21 @@ namespace API_Assignment_3.Controllers
         [HttpPut("{id}/characterUpdate")]
         public async Task<IActionResult> UpdateCharactersInMovie(int id, List<int> characters)
         {
+            // Check if movie ID exists
             if (!MovieExists(id))
             {
                 return NotFound();
             }
-
-            Movie charactersInMovie = await _context.Movies
-                .Include(c => c.Characters)
-                .Where(c => c.Id == id)
-                .FirstAsync();
-
-            List<Character> chars = new();
-            foreach (int characterId in characters)
-            {
-                Character chararcters = await _context.Characters.FindAsync(characterId);
-                if (characters == null)
-                    return BadRequest("Character does not exist!");
-                chars.Add(chararcters);
-            }
-            charactersInMovie.Characters = chars;
-
+            // try to update
             try
             {
-                await _context.SaveChangesAsync();
+                await _movieService.UpdateCharacterInMovie(id, characters);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception e)
             {
-                throw;
-            }
 
+                return BadRequest(e.Message);
+            }
             return NoContent();
         }
 

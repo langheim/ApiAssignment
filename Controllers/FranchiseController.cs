@@ -1,9 +1,11 @@
 ﻿using API_Assignment_3.Models;
 using API_Assignment_3.Models.Domain;
 using API_Assignment_3.Models.DTO;
+using API_Assignment_3.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
@@ -18,12 +20,16 @@ namespace API_Assignment_3.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class FranchiseController : ControllerBase
     {
+        // link to DbContext
         private readonly MediaDbContext _context;
+        // injecting services
+        private readonly FranchiseService _franchiseService;
         private readonly IMapper _mapper;
 
-        public FranchiseController(MediaDbContext context, IMapper mapper)
+        public FranchiseController(MediaDbContext context, IMapper mapper, FranchiseService franchiseService)
         {
             _context = context;
+            _franchiseService = franchiseService;
             _mapper = mapper;
         }
 
@@ -46,7 +52,7 @@ namespace API_Assignment_3.Controllers
         public async Task<ActionResult<FranchiseReadDTO>> GetFranchise(int id)
         {
             var franchise = await _context.Franchises.FindAsync(id);
-
+            // Check if if exists
             if (franchise == null)
             {
                 return NotFound();
@@ -64,7 +70,7 @@ namespace API_Assignment_3.Controllers
         public async Task<ActionResult<FranchiseMovieDTO>> GetMoviesByFranchise(int id)
         {
             var franchise = await _context.Franchises.FindAsync(id);
-
+            // Check if exists
             if (franchise == null)
             {
                 return NotFound();
@@ -98,6 +104,7 @@ namespace API_Assignment_3.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFranchise(int id, FranchiseReadDTO franchise)
         {
+            // Check if franchise ID exists
             if (id != franchise.Id)
             {
                 return BadRequest();
@@ -106,6 +113,7 @@ namespace API_Assignment_3.Controllers
             Franchise franc = _mapper.Map<Franchise>(franchise);
             _context.Entry(franc).State = EntityState.Modified;
 
+            // Try to update
             try
             {
                 await _context.SaveChangesAsync();
@@ -134,35 +142,20 @@ namespace API_Assignment_3.Controllers
         [HttpPut("{id}/movieUpdate")]
         public async Task<IActionResult> MovieFranchiseUpdate(int id, List<int> movies)
         {
-            if (!FranchiseExists(id))
+            // Check if ID is valid
+            if (id <= 0 || movies.Count == 0)
             {
-                return NotFound();
+                return BadRequest("Invalid ID");
             }
-
-            Franchise movieGet = await _context.Franchises
-                .Include(c => c.Movies)
-                .Where(c => c.Id == id)
-                .FirstAsync();
-
-            List<Movie> moviesList = new();
-            foreach (int movId in movies)
-            {
-                Movie movieList = await _context.Movies.FindAsync(movId);
-                if (movieList == null)
-                    return BadRequest("No movie found with this ID!");
-                moviesList.Add(movieList);
-            }
-            movieGet.Movies = moviesList;
-
+            // Test if update is possible
             try
             {
-                await _context.SaveChangesAsync();
+                await _franchiseService.MovieFranchiseUpdates(id, movies);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception e)
             {
-                throw;
+                return BadRequest(e.Message);
             }
-
             return NoContent();
         }
 
@@ -190,6 +183,7 @@ namespace API_Assignment_3.Controllers
         public async Task<IActionResult> DeleteFranchise(int id)
         {
             var franchise = await _context.Franchises.FindAsync(id);
+            // Check if exists
             if (franchise == null)
             {
                 return NotFound();
