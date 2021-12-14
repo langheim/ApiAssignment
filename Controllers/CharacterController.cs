@@ -32,7 +32,7 @@ namespace API_Assignment_3.Controllers
         /// <summary>
         /// Returns a list of all characters
         /// </summary>
-        /// <returns>Returns a list of all characters</returns>
+        /// <returns>Returns a list of all characters and movies they are in</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharacters()
         {
@@ -44,7 +44,7 @@ namespace API_Assignment_3.Controllers
         /// Get character by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Returns a character based on ID</returns>
+        /// <returns>Returns a character based on ID with movies they are in</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<CharacterReadDTO>> GetCharacter(int id)
         {
