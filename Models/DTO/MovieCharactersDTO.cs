@@ -12,6 +12,6 @@ namespace API_Assignment_3.Models.DTO
         public string ImageURL { get; set; }
         public string TrailerURL { get; set; }
         public List<string> Characters { get; set; }
-        public int FranchiseId { get; set; }
+        public int? FranchiseId { get; set; }
     }
 }

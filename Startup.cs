@@ -72,12 +72,12 @@ namespace API_Assignment_3
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-              
+
             }
             // Added swagger so it works in productive API
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Assignment_3 v1"));
-            
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

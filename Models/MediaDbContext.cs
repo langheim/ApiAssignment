@@ -38,6 +38,11 @@ namespace API_Assignment_3.Models
                 Description = "American epic space opera multimedia franchise created by George Lucas."
             });
             // Add some movies
+
+            modelBuilder.Entity<Movie>()
+                .Property(b => b.FranchiseId)
+                .HasDefaultValue(1);
+
             modelBuilder.Entity<Movie>().HasData(new Movie
             {
                 Id = 1,
@@ -105,6 +110,18 @@ namespace API_Assignment_3.Models
                 ReleaseYear = "1980",
             });
             // Add some characters
+
+            modelBuilder.Entity<Character>()
+                .Property(b => b.Alias)
+                .HasDefaultValue(null);
+            modelBuilder.Entity<Character>()
+                .Property(b => b.Gender)
+                .HasDefaultValue(null);
+            modelBuilder.Entity<Character>()
+                .Property(b => b.ImageURL)
+                .HasDefaultValue(null);
+
+
             modelBuilder.Entity<Character>().HasData(new Character
             {
                 Id = 1,
@@ -148,10 +165,10 @@ namespace API_Assignment_3.Models
             // Create relationship to movies and Character 
             modelBuilder
                 .Entity<Character>()
-                .HasMany(c => c.Movies)
-                .WithMany(m => m.Characters)
+                .HasMany(m => m.Movies)
+                .WithMany(c => c.Characters)
                 .UsingEntity<Dictionary<string, object>>("CharacterMovie", r => r.HasOne<Movie>()
-                .WithMany().HasForeignKey("MoviesId"), l => l.HasOne<Character>()
+                .WithMany().HasForeignKey("MoviesId"), i => i.HasOne<Character>()
                 .WithMany().HasForeignKey("CharactersId"), ur =>
                 {
                     ur.HasKey("MoviesId", "CharactersId");

@@ -14,7 +14,7 @@ namespace API_Assignment_3.Services
         {
             _context = context;
         }
-        
+
         // Moved the UpdateCharactersInMovie to services to clean up dbcontext code in main controller
         public async Task UpdateCharacterInMovie(int id, List<int> characters)
         {

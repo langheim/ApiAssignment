@@ -1,7 +1,6 @@
 ﻿using API_Assignment_3.Models;
 using API_Assignment_3.Models.Domain;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +10,7 @@ namespace API_Assignment_3.Services
     public class FranchiseService
     {
         private readonly MediaDbContext _context;
-        
+
         public FranchiseService(MediaDbContext context)
         {
             _context = context;
@@ -28,7 +27,7 @@ namespace API_Assignment_3.Services
             {
                 Movie movieList = await _context.Movies.FindAsync(movId);
                 if (movieList == null) continue;
-                    
+
                 moviesList.Add(movieList);
             }
             // set found movies to moviesList
