@@ -17,3 +17,4 @@ Tasks:
 5. Update database to see if it worked (should be data in the Azure Db)
 6. Dockerize your application, build and push the image to Docker Hub.
 7. Then deploy your image as an app in Azure.
+
