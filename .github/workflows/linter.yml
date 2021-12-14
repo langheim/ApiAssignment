@@ -14,18 +14,13 @@ name: Lint Code Base
 #############################
 # Start the job on all push #
 #############################
-on:
-  push:
-    # branches-ignore: [master, main]
-    # Remove the comment above to run when not pushing to master
-  pull_request:
-    branches: [master]
-
+on: push
+  
 ###############
 # Set the Job #
 ###############
 jobs:
-  build:
+ super-lint:
     # Name the Job
     name: Lint Code Base
     # Set the agent to run on
