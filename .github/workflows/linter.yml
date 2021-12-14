@@ -36,7 +36,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
         with:
-          path: ${{ github.workspace }}
+          path: /langheim/ApiAssignment/
 
       ################################
       # Run Linter against code base #
@@ -44,7 +44,7 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter@v4
         with:
-          path: ${{ github.workspace }}
+          path: /langheim/ApiAssignment/
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
