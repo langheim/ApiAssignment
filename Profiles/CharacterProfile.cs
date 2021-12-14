@@ -9,7 +9,7 @@ namespace API_Assignment_3.Profiles
     {
         public CharacterProfile()
         {
-            // Create a map for Character to CharacterReadDTO and sending it to an Array
+            // Create a map for Character to CharacterReadDTO and sending the title to Array
             CreateMap<Character, CharacterReadDTO>().ForMember(cdto => cdto.Movies, opt => opt.MapFrom(c => c.Movies.Select(c => c.Title).ToArray()));
             // Create map for CharacterCreateDTO to Character
             CreateMap<CharacterCreateDTO, Character>();

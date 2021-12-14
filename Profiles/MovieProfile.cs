@@ -15,7 +15,7 @@ namespace API_Assignment_3.Profiles
             CreateMap<MovieCreateDTO, Movie>();
             // Create map for EditDTO to Movie
             CreateMap<MovieEditDTO, Movie>();
-            // Create map for Characters in movies and sending characters to an array
+            // Create map for Characters in movies and sending characters full name to an array
             CreateMap<Movie, MovieCharactersDTO>().ForMember(cdto => cdto.Characters, opt => opt.MapFrom(c => c.Characters.Select(c => c.FullName).ToArray()));
         }
     }

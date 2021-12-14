@@ -24,6 +24,7 @@ namespace API_Assignment_3.Controllers
         private readonly MediaDbContext _context;
         // injecting services
         private readonly MovieService _movieService;
+        // Add automapper
         private readonly IMapper _mapper;
 
         public MovieController(MediaDbContext context, IMapper mapper, MovieService movieService)
@@ -40,6 +41,7 @@ namespace API_Assignment_3.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMovies()
         {
+            // get list from dbcontext and automap
             return _mapper.Map<List<MovieReadDTO>>(await _context.Movies.ToListAsync());
         }
 
@@ -51,13 +53,14 @@ namespace API_Assignment_3.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MovieReadDTO>> GetMovie(int id)
         {
+            // get list from dbcontext
             var movie = await _context.Movies.FindAsync(id);
             // Check if movie ID exists
             if (movie == null)
             {
                 return NotFound();
             }
-
+            // set return to automap
             return _mapper.Map<MovieReadDTO>(movie);
         }
 
@@ -69,14 +72,16 @@ namespace API_Assignment_3.Controllers
         [HttpGet("{id}/characters")]
         public async Task<ActionResult<MovieCharactersDTO>> GetMoviesWithCharacter(int id)
         {
+            // get list by ID from dbcontext
             var movie = await _context.Movies.FindAsync(id);
             // Check if movie ID exists
             if (movie == null)
             {
                 return NotFound();
             }
-
+            // get collection of Characters from dbContext
             await _context.Entry(movie).Collection(c => c.Characters).LoadAsync();
+            // set return to automap
             return _mapper.Map<MovieCharactersDTO>(movie);
         }
         /// <summary>
@@ -93,8 +98,9 @@ namespace API_Assignment_3.Controllers
             {
                 return BadRequest();
             }
-
+            // get list from automapper
             Movie movies = _mapper.Map<Movie>(movie);
+            // get list of movies based on modified
             _context.Entry(movies).State = EntityState.Modified;
             // Try to update
             try
@@ -112,7 +118,7 @@ namespace API_Assignment_3.Controllers
                     throw;
                 }
             }
-
+            // if nothing then return NoContent
             return NoContent();
         }
         /// <summary>
@@ -139,6 +145,7 @@ namespace API_Assignment_3.Controllers
 
                 return BadRequest(e.Message);
             }
+            // if nothing then return NoContent
             return NoContent();
         }
 
@@ -150,10 +157,13 @@ namespace API_Assignment_3.Controllers
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(MovieCreateDTO movie)
         {
+            // get list of movies from Automapper
             Movie movies = _mapper.Map<Movie>(movie);
+            // Add movies to dbcontext 
             _context.Movies.Add(movies);
+            // Update the changes 
             await _context.SaveChangesAsync();
-
+            // Return updated post
             return CreatedAtAction("GetMovie", new { id = movies.Id }, movie);
         }
 
@@ -165,18 +175,22 @@ namespace API_Assignment_3.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
+            // get list by ID from dbcontext
             var movie = await _context.Movies.FindAsync(id);
+            // Check if movie has no value
             if (movie == null)
             {
                 return NotFound();
             }
-
+            // remove movie selected from var movie
             _context.Movies.Remove(movie);
+            // Update
             await _context.SaveChangesAsync();
-
+            // Return noContent
             return NoContent();
         }
 
+        // Check that Movie exists
         private bool MovieExists(int id)
         {
             return _context.Movies.Any(e => e.Id == id);

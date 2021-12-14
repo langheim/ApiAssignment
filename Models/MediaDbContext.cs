@@ -11,15 +11,16 @@ namespace API_Assignment_3.Models
         public MediaDbContext([NotNullAttribute] DbContextOptions options) : base(options)
         {
         }
+        
         // Create Tables
         public DbSet<Character> Characters { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Franchise> Franchises { get; set; }
+        
         // Fill tables with ModelBuilder
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Add new franchise
-
+            // Add new franchise and also create ID 1 as No franchise
             modelBuilder.Entity<Franchise>().HasData(new Franchise
             {
                 Id = 1,
@@ -45,8 +46,8 @@ namespace API_Assignment_3.Models
                 Name = "Star Wars",
                 Description = "American epic space opera multimedia franchise created by George Lucas."
             });
-            // Add some movies
-
+            
+            // First get franchiseID and then add some movies
             modelBuilder.Entity<Movie>()
                 .Property(b => b.FranchiseId)
                 .HasDefaultValue(1);
@@ -117,8 +118,8 @@ namespace API_Assignment_3.Models
                 FranchiseId = 4,
                 ReleaseYear = "1980",
             });
-            // Add some characters
-
+            
+            // Get Alias, Gender and imageUrl and add some characters
             modelBuilder.Entity<Character>()
                 .Property(b => b.Alias)
                 .HasDefaultValue(null);
@@ -169,6 +170,7 @@ namespace API_Assignment_3.Models
                 Gender = "Female",
                 ImageURL = "https://www.imdb.com/title/tt0076759/mediaviewer/rm2927189504?ref_=ttmi_mi_all_sf_6"
             });
+            
             // Create relationship to movies and Character 
             modelBuilder
                 .Entity<Character>()

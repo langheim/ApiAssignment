@@ -24,6 +24,7 @@ namespace API_Assignment_3.Controllers
         private readonly MediaDbContext _context;
         // injecting services
         private readonly FranchiseService _franchiseService;
+        // Add automapper
         private readonly IMapper _mapper;
 
         public FranchiseController(MediaDbContext context, IMapper mapper, FranchiseService franchiseService)
@@ -40,6 +41,7 @@ namespace API_Assignment_3.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FranchiseReadDTO>>> GetFranchises()
         {
+            // get list from dbcontext and automap
             return _mapper.Map<List<FranchiseReadDTO>>(await _context.Franchises.ToListAsync());
         }
 
@@ -51,13 +53,14 @@ namespace API_Assignment_3.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<FranchiseReadDTO>> GetFranchise(int id)
         {
+            // get list based on ID from dbcontext
             var franchise = await _context.Franchises.FindAsync(id);
             // Check if if exists
             if (franchise == null)
             {
                 return NotFound();
             }
-
+            // set return to automap
             return _mapper.Map<FranchiseReadDTO>(franchise);
         }
 
@@ -75,7 +78,9 @@ namespace API_Assignment_3.Controllers
             {
                 return NotFound();
             }
+            // get collection of movies from dbContext
             await _context.Entry(franchise).Collection(c => c.Movies).LoadAsync();
+            // set return to automap
             return _mapper.Map<FranchiseMovieDTO>(franchise);
 
         }
@@ -100,9 +105,11 @@ namespace API_Assignment_3.Controllers
             }
             else
             {
+                // get collection of franchises from dbContext
                 var movie = await _context.Movies.Where(c => c.FranchiseId == id).FirstAsync();
-               
+                // get movie characters from the list of movie
                 await _context.Entry(movie).Collection(i => i.Characters).LoadAsync();
+                // set return to automap
                 return _mapper.Map<FranchiseCharactersDTO>(movie);
             }
         }
@@ -121,10 +128,10 @@ namespace API_Assignment_3.Controllers
             {
                 return BadRequest();
             }
-
+            // Set franc as automapper return
             Franchise franc = _mapper.Map<Franchise>(franchise);
+            // get list of franchises based on modified
             _context.Entry(franc).State = EntityState.Modified;
-
             // Try to update
             try
             {
@@ -141,7 +148,7 @@ namespace API_Assignment_3.Controllers
                     throw;
                 }
             }
-
+            // if nothing then return NoContent
             return NoContent();
         }
 
@@ -162,12 +169,14 @@ namespace API_Assignment_3.Controllers
             // Test if update is possible
             try
             {
+                // Update
                 await _franchiseService.MovieFranchiseUpdates(id, movies);
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
+            // if nothing then return NoContent
             return NoContent();
         }
 
@@ -179,10 +188,12 @@ namespace API_Assignment_3.Controllers
         [HttpPost]
         public async Task<ActionResult<FranchiseCreateDTO>> PostFranchise(FranchiseCreateDTO franchise)
         {
+            // Set addFrancise to automapper return
             Franchise addFranchise = _mapper.Map<Franchise>(franchise);
+            // Add return of addFranchise to dbcontext
             _context.Franchises.Add(addFranchise);
+            // Update
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetFranchise", new { id = addFranchise.Id }, franchise);
         }
 
@@ -194,19 +205,22 @@ namespace API_Assignment_3.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFranchise(int id)
         {
+            // get franchise based on ID from dbContext
             var franchise = await _context.Franchises.FindAsync(id);
             // Check if exists
             if (franchise == null)
             {
                 return NotFound();
             }
-
+            // Remove
             _context.Franchises.Remove(franchise);
+            // Update
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
+        // Check that franchise exists
         private bool FranchiseExists(int id)
         {
             return _context.Franchises.Any(e => e.Id == id);
