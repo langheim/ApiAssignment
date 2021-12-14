@@ -37,7 +37,7 @@ namespace API_Assignment_3.Controllers
         /// <summary>
         /// Get all movies
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a list of all Movies in DB</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMovies()
         {
@@ -49,7 +49,7 @@ namespace API_Assignment_3.Controllers
         /// Get movie by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Returns a movie based on ID supplied</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<MovieReadDTO>> GetMovie(int id)
         {
@@ -68,7 +68,7 @@ namespace API_Assignment_3.Controllers
         /// Get all characters in a movie by movie ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Returns movie based on ID and also characters in selected movie</returns>
         [HttpGet("{id}/characters")]
         public async Task<ActionResult<MovieCharactersDTO>> GetMoviesWithCharacter(int id)
         {
@@ -89,7 +89,7 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="movie"></param>
-        /// <returns></returns>
+        /// <returns>Update movie based on ID supplied formats via MovieEditDTO</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, MovieEditDTO movie)
         {
@@ -126,7 +126,7 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="characters"></param>
-        /// <returns></returns>
+        /// <returns>Update a character in a movie based on ID supplied from Int List</returns>
         [HttpPut("{id}/characterUpdate")]
         public async Task<IActionResult> UpdateCharactersInMovie(int id, List<int> characters)
         {
@@ -153,7 +153,7 @@ namespace API_Assignment_3.Controllers
         /// Add a new movie
         /// </summary>
         /// <param name="movie"></param>
-        /// <returns></returns>
+        /// <returns>Adds a new movie based on MovieCreateDTO</returns>
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(MovieCreateDTO movie)
         {
@@ -171,7 +171,7 @@ namespace API_Assignment_3.Controllers
         /// Delete a movie by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Deletes a movie based on ID supplied</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {

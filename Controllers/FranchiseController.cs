@@ -37,7 +37,7 @@ namespace API_Assignment_3.Controllers
         /// <summary>
         /// Get all franchises
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a list of all franchises</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FranchiseReadDTO>>> GetFranchises()
         {
@@ -49,7 +49,7 @@ namespace API_Assignment_3.Controllers
         /// Get franchise by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Returns franchise by ID supplied</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<FranchiseReadDTO>> GetFranchise(int id)
         {
@@ -68,7 +68,7 @@ namespace API_Assignment_3.Controllers
         /// Get all movies by franchice ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Returns a list of movies based on franchise ID and formated with FranchiseMovieDTO</returns>
         [HttpGet("{id}/movies")]
         public async Task<ActionResult<FranchiseMovieDTO>> GetMoviesByFranchise(int id)
         {
@@ -86,10 +86,10 @@ namespace API_Assignment_3.Controllers
         }
 
         /// <summary>
-        /// Get all characters by franchice ID
+        /// Get all characters by franchise ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Returns all characters in a franchise based on ID supplied, formated with FranchiseCharactersDTO</returns>
         [HttpGet("{id}/characters")]
         public async Task<ActionResult<FranchiseCharactersDTO>> GetCharacterByFranchise(int id)
         {
@@ -119,7 +119,7 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="franchise"></param>
-        /// <returns></returns>
+        /// <returns>Update franchise by ID supplied</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFranchise(int id, FranchiseReadDTO franchise)
         {
@@ -157,7 +157,7 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="movies"></param>
-        /// <returns></returns>
+        /// <returns>Updates a movie based on franchise ID supplied</returns>
         [HttpPut("{id}/movieUpdate")]
         public async Task<IActionResult> MovieFranchiseUpdate(int id, List<int> movies)
         {
@@ -184,7 +184,7 @@ namespace API_Assignment_3.Controllers
         /// Add a new franchise
         /// </summary>
         /// <param name="franchise"></param>
-        /// <returns></returns>
+        /// <returns>Adds a new franchise and returns created action</returns>
         [HttpPost]
         public async Task<ActionResult<FranchiseCreateDTO>> PostFranchise(FranchiseCreateDTO franchise)
         {
@@ -201,7 +201,7 @@ namespace API_Assignment_3.Controllers
         /// Delete a franchise by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Delete franchise by ID supplied</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFranchise(int id)
         {

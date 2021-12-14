@@ -44,7 +44,7 @@ namespace API_Assignment_3.Controllers
         /// Get character by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Returns a character based on ID</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<CharacterReadDTO>> GetCharacter(int id)
         {
@@ -67,7 +67,7 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="character"></param>
-        /// <returns></returns>
+        /// <returns>Updates a character based on input ID</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCharacter(int id, CharacterEditDTO character)
         {
@@ -104,7 +104,7 @@ namespace API_Assignment_3.Controllers
         /// Add a new character
         /// </summary>
         /// <param name="character"></param>
-        /// <returns></returns>
+        /// <returns>Returns new character created with automapper field defined in CharacterReadDTO</returns>
         [HttpPost]
         public async Task<ActionResult<Character>> PostCharacter(CharacterCreateDTO character)
         {
@@ -122,7 +122,7 @@ namespace API_Assignment_3.Controllers
         /// Delete a character by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Deletes a character based on ID supplied</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCharacter(int id)
         {
