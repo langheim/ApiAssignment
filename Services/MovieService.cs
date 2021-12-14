@@ -21,19 +21,17 @@ namespace API_Assignment_3.Services
             // Get a list of characters based on movie ID
             Movie charactersInMovie = await _context.Movies.Include(c => c.Characters).Where(c => c.Id == id).FirstAsync();
 
-            // Create a list to put characters
-            List<Character> chars = new();
-            // Loop thru
+            // Check for character id in characters
             foreach (int characterId in characters)
             {
                 Character chararcters = await _context.Characters.FindAsync(characterId);
-                if (characters == null) continue;
-
-                chars.Add(chararcters);
+                if (characters == null)
+                    continue;
+                if (charactersInMovie.Characters.Contains(chararcters))
+                    continue;
+                // Add character
+                charactersInMovie.Characters.Add(chararcters);
             }
-            // set found characters to chars
-            charactersInMovie.Characters = chars;
-
             //Update changes and return
             await _context.SaveChangesAsync();
 

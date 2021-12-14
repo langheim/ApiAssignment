@@ -49,7 +49,7 @@ namespace API_Assignment_3.Controllers
         /// Get franchise by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Returns franchise by ID supplied</returns>
+        /// <returns>Returns franchise by ID supplied, throws 404 Not found if ID does not exist</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<FranchiseReadDTO>> GetFranchise(int id)
         {
@@ -68,12 +68,12 @@ namespace API_Assignment_3.Controllers
         /// Get all movies by franchice ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Returns a list of movies based on franchise ID and formated with FranchiseMovieDTO</returns>
+        /// <returns>Returns a list of movies based on franchise ID and formated with FranchiseMovieDTO, throws 404 Not found if franchise does not exist</returns>
         [HttpGet("{id}/movies")]
         public async Task<ActionResult<FranchiseMovieDTO>> GetMoviesByFranchise(int id)
         {
             var franchise = await _context.Franchises.FindAsync(id);
-            // Check if exists
+            // Check if not null
             if (franchise == null)
             {
                 return NotFound();
@@ -89,7 +89,7 @@ namespace API_Assignment_3.Controllers
         /// Get all characters by franchise ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Returns all characters in a franchise based on ID supplied, formated with FranchiseCharactersDTO</returns>
+        /// <returns>Returns all characters in a franchise based on ID supplied, formated with FranchiseCharactersDTO, throws 404 Not found if ID is equal to 1, , throws 404 Not found if franchise does not exist</returns>
         [HttpGet("{id}/characters")]
         public async Task<ActionResult<FranchiseCharactersDTO>> GetCharacterByFranchise(int id)
         {
@@ -119,11 +119,11 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="franchise"></param>
-        /// <returns>Update franchise by ID supplied</returns>
+        /// <returns>Update franchise by ID supplied, throws Bad request if ID is not equal to ID, , throws 404 Not found if franchise does not exist</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFranchise(int id, FranchiseReadDTO franchise)
         {
-            // Check franchise ID
+            // Check franchise ID is equal
             if (id != franchise.Id)
             {
                 return BadRequest();
@@ -160,7 +160,7 @@ namespace API_Assignment_3.Controllers
         [HttpPut("{id}/movieUpdate")]
         public async Task<IActionResult> MovieFranchiseUpdate(int id, List<int> movies)
         {
-            // Check if ID is valid
+            // Check ID and movie cound is valid
             if (id <= 0 || movies.Count == 0)
             {
                 return BadRequest("Invalid ID");
@@ -200,7 +200,7 @@ namespace API_Assignment_3.Controllers
         /// Delete a franchise by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Delete franchise by ID supplied</returns>
+        /// <returns>Delete franchise by ID supplied, throws 404 Not found if franchise does not exist</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFranchise(int id)
         {

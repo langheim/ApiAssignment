@@ -44,13 +44,13 @@ namespace API_Assignment_3.Controllers
         /// Get character by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Returns a character based on ID with movies they are in</returns>
+        /// <returns>Returns a character based on ID with movies they are in, throws 404 Not found if character does not exist</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<CharacterReadDTO>> GetCharacter(int id)
         {
             // get list from dbcontext
             var character = await _context.Characters.FindAsync(id);
-            // Check if exists
+            // Check if not null
             if (character == null)
             {
                 return NotFound();
@@ -67,11 +67,11 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="character"></param>
-        /// <returns>Updates a character based on input ID</returns>
+        /// <returns>Updates a character based on input ID, throws Bad request if ID is not equal to ID, throws 404 Not found if character does not exist</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCharacter(int id, CharacterEditDTO character)
         {
-            // Check if character ID exists
+            // Check if character ID input is equal to ID
             if (id != character.Id)
             {
                 return BadRequest();
@@ -121,13 +121,13 @@ namespace API_Assignment_3.Controllers
         /// Delete a character by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Deletes a character based on ID supplied</returns>
+        /// <returns>Deletes a character based on ID supplied, throws 404 Not found if character does not exist</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCharacter(int id)
         {
             // Set character from return of dbcontext
             var character = await _context.Characters.FindAsync(id);
-            // Check if exists
+            // Check if not null
             if (character == null)
             {
                 return NotFound();

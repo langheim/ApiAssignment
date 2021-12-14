@@ -49,7 +49,7 @@ namespace API_Assignment_3.Controllers
         /// Get movie by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Returns a movie based on ID supplied</returns>
+        /// <returns>Returns a movie based on ID supplied, throws 404 Not found if ID error</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<MovieReadDTO>> GetMovie(int id)
         {
@@ -68,7 +68,7 @@ namespace API_Assignment_3.Controllers
         /// Get all characters in a movie by movie ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Returns movie based on ID and also characters in selected movie</returns>
+        /// <returns>Returns movie based on ID and also characters in selected movie, throws 404 Not found if ID error</returns>
         [HttpGet("{id}/characters")]
         public async Task<ActionResult<MovieCharactersDTO>> GetMoviesWithCharacter(int id)
         {
@@ -89,7 +89,7 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="movie"></param>
-        /// <returns>Update movie based on ID supplied formats via MovieEditDTO</returns>
+        /// <returns>Update movie based on ID supplied formats via MovieEditDTO, Trows Bad Request if ID is not the same as ID, throws 404 Not found if ID does not exist</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, MovieEditDTO movie)
         {
@@ -125,7 +125,7 @@ namespace API_Assignment_3.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="characters"></param>
-        /// <returns>Update a character in a movie based on ID supplied from Int List</returns>
+        /// <returns>Update a character in a movie based on ID supplied from Int List, throws 404 Not found if ID does not exist. Bad Request if error</returns>
         [HttpPut("{id}/characterUpdate")]
         public async Task<IActionResult> UpdateCharactersInMovie(int id, List<int> characters)
         {
@@ -170,7 +170,7 @@ namespace API_Assignment_3.Controllers
         /// Delete a movie by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Deletes a movie based on ID supplied</returns>
+        /// <returns>Deletes a movie based on ID supplied<, throws 404 Not found if ID does not exist/returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
