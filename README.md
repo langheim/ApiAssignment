@@ -18,3 +18,5 @@ Tasks:
 6. Dockerize your application, build and push the image to Docker Hub.
 7. Then deploy your image as an app in Azure.
 
+8. CI workflow
+Workflow has been setup to push from VS to GitHub --> Actions in GitHub runs workflow from .github/workflows/linter.yml that runs Super-Linter check on code then Builds and push the code to Docker repository then Azure consumes the Docker image. 
