@@ -14,7 +14,11 @@ name: Lint Code Base
 #############################
 # Start the job on all push #
 #############################
-on: push
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
   
 ###############
 # Set the Job #
@@ -45,3 +49,15 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      ##################################
+      # Build and push to Docker image #
+      ##################################
+      - name: Build and Push Docker Image
+        uses: mr-smithers-excellent/docker-build-push@v4
+        with:
+          image: langheim/apiassignment
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
