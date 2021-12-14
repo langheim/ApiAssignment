@@ -98,9 +98,8 @@ namespace API_Assignment_3.Controllers
             {
                 return BadRequest();
             }
-            // get list from automapper
+            // Set input
             Movie movies = _mapper.Map<Movie>(movie);
-            // get list of movies based on modified
             _context.Entry(movies).State = EntityState.Modified;
             // Try to update
             try
@@ -159,9 +158,9 @@ namespace API_Assignment_3.Controllers
         {
             // get list of movies from Automapper
             Movie movies = _mapper.Map<Movie>(movie);
-            // Add movies to dbcontext 
+            // Add movies to dbcontext
             _context.Movies.Add(movies);
-            // Update the changes 
+            // Update the changes
             await _context.SaveChangesAsync();
             // Return updated post
             return CreatedAtAction("GetMovie", new { id = movies.Id }, movie);

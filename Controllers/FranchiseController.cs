@@ -98,7 +98,7 @@ namespace API_Assignment_3.Controllers
             {
                 return NotFound();
             }
-            // Check if franchiseID is valid
+            // Check if franchiseID exists
             if (!FranchiseExists(id))
             {
                 return NotFound();
@@ -128,9 +128,8 @@ namespace API_Assignment_3.Controllers
             {
                 return BadRequest();
             }
-            // Set franc as automapper return
+            // Get input from user mapped vis dto
             Franchise franc = _mapper.Map<Franchise>(franchise);
-            // get list of franchises based on modified
             _context.Entry(franc).State = EntityState.Modified;
             // Try to update
             try

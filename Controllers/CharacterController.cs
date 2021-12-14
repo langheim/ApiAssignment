@@ -76,9 +76,8 @@ namespace API_Assignment_3.Controllers
             {
                 return BadRequest();
             }
-            // Set chars as automapper return
+            // Set input layout
             Character chars = _mapper.Map<Character>(character);
-            // get list from chars based on modified
             _context.Entry(chars).State = EntityState.Modified;
             // Try to update
             try
@@ -108,13 +107,13 @@ namespace API_Assignment_3.Controllers
         [HttpPost]
         public async Task<ActionResult<Character>> PostCharacter(CharacterCreateDTO character)
         {
-            // Set characterAdd as automapper return
+            // Set input layout
             Character characterAdd = _mapper.Map<Character>(character);
             // Add return
             _context.Characters.Add(characterAdd);
             // Update
             await _context.SaveChangesAsync();
-            // Return formated
+            // Return
             return CreatedAtAction("GetCharacter", new { id = characterAdd.Id }, _mapper.Map<CharacterReadDTO>(characterAdd));
         }
 
@@ -133,7 +132,7 @@ namespace API_Assignment_3.Controllers
             {
                 return NotFound();
             }
-            // Remove 
+            // Remove
             _context.Characters.Remove(character);
             // Update
             await _context.SaveChangesAsync();
