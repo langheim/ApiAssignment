@@ -31,9 +31,9 @@ namespace API_Assignment_3
             services.AddAutoMapper(typeof(Startup));
             // Add connection from appsettings.json // Set to production to work with Azure (ConnectionString has been removed from appsettings and added to Azure)
             services.AddDbContext<MediaDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Production")));
-            // Add service connection to MovieController 
+            // Add service connection to MovieController
             services.AddScoped(typeof(MovieService));
-            // Add service connection to FranchiseController 
+            // Add service connection to FranchiseController
             services.AddScoped(typeof(FranchiseService));
             // Add swagger doc
             services.AddSwaggerGen(c =>
@@ -72,11 +72,10 @@ namespace API_Assignment_3
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Assignment_3 v1"));
             }
             // Added swagger so it works in productive API
-            
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Assignment_3 v1"));
 
             app.UseHttpsRedirection();
 
