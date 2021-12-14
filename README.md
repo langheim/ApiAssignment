@@ -6,17 +6,16 @@ Goal: By completing this assignment should be able to:
 Create a database with EF Core
 Create a ASP.NET Core web API
 Document a web API using Swagger/OpenAPI
-Instructions:
 
-Tasks:
+Tasks done:
 
-1. Create a ASP.NET Core Web API following the instructions in Assignment 3_CSharp_Web API creation in ASP.NET Core.pdf
-2. Create a free trail on Azure.
-3. Create a Sql Server instance (lowest tier option)
-4. Change connection String in your application.
-5. Update database to see if it worked (should be data in the Azure Db)
-6. Dockerize your application, build and push the image to Docker Hub.
-7. Then deploy your image as an app in Azure.
+1. Created a ASP.NET Core Web API following the instructions in Assignment 3_CSharp_Web API creation in ASP.NET Core.pdf
+2. Created a Resourse group in Azure.
+3. Created a Sql Server instance (lowest tier option) on Azure
+4. Change connection String in application.
+5. Updated database to use Azure Db
+6. Dockerized the application, build and pushed the image to Docker Hub.
+7. Deployed the image as an app in Azure.
 
-8. CI workflow
-Workflow has been setup to push from VS to GitHub --> Actions in GitHub runs workflow from .github/workflows/linter.yml that runs Super-Linter check on code then Builds and push the code to Docker repository then Azure consumes the Docker image.
+8. Added new CI workflow on GitHub:
+Workflow now setup to push from VS to GitHub --> Actions in GitHub runs .github/workflows/linter.yml that runs Super-Linter check on code then Builds and pushes the code to my Docker repository then Azure consumes the Docker image.
