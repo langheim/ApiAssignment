@@ -9,6 +9,6 @@ namespace API_Assignment_3.Models.DTO
         public string Alias { get; set; }
         public string Gender { get; set; }
         public string ImageURL { get; set; }
-        public List<int> Movies { get; set; }
+        public List<string> Movies { get; set; }
     }
 }

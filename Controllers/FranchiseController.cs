@@ -88,11 +88,23 @@ namespace API_Assignment_3.Controllers
         [HttpGet("{id}/characters")]
         public async Task<ActionResult<FranchiseCharactersDTO>> GetCharacterByFranchise(int id)
         {
-            var movie = await _context.Movies.Where(c => c.FranchiseId == id).FirstAsync();
-
-            await _context.Entry(movie).Collection(i => i.Characters).LoadAsync();
-
-            return _mapper.Map<FranchiseCharactersDTO>(movie);
+            // return a not found if id is 1 since 1 is default No franchise id
+            if (id == 1)
+            {
+                return NotFound();
+            }
+            // Check if franchiseID is valid
+            if (!FranchiseExists(id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                var movie = await _context.Movies.Where(c => c.FranchiseId == id).FirstAsync();
+               
+                await _context.Entry(movie).Collection(i => i.Characters).LoadAsync();
+                return _mapper.Map<FranchiseCharactersDTO>(movie);
+            }
         }
 
         /// <summary>
@@ -104,7 +116,7 @@ namespace API_Assignment_3.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFranchise(int id, FranchiseReadDTO franchise)
         {
-            // Check if franchise ID exists
+            // Check franchise ID
             if (id != franchise.Id)
             {
                 return BadRequest();

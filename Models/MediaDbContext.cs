@@ -19,21 +19,29 @@ namespace API_Assignment_3.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Add new franchise
+
             modelBuilder.Entity<Franchise>().HasData(new Franchise
             {
                 Id = 1,
+                Name = "Franchise not set",
+                Description = "No franchise"
+            });
+
+            modelBuilder.Entity<Franchise>().HasData(new Franchise
+            {
+                Id = 2,
                 Name = "The Hobbit",
                 Description = "A curious Hobbit, Bilbo Baggins, journeys to the Lonely Mountain with a vigorous group."
             });
             modelBuilder.Entity<Franchise>().HasData(new Franchise
             {
-                Id = 2,
+                Id = 3,
                 Name = "The Lord of the Rings",
                 Description = "A shy young hobbit named Frodo Baggins inherits a simple gold ring."
             });
             modelBuilder.Entity<Franchise>().HasData(new Franchise
             {
-                Id = 3,
+                Id = 4,
                 Name = "Star Wars",
                 Description = "American epic space opera multimedia franchise created by George Lucas."
             });
@@ -51,7 +59,7 @@ namespace API_Assignment_3.Models
                 Director = "Peter Jackson",
                 ImageURL = "https://www.imdb.com/title/tt0903624/mediaviewer/rm3577719808/?ref_=tt_ov_i",
                 TrailerURL = "https://www.imdb.com/video/vi650683417?playlistId=tt0903624&ref_=tt_ov_vi",
-                FranchiseId = 1,
+                FranchiseId = 2,
                 ReleaseYear = "2012",
             });
             modelBuilder.Entity<Movie>().HasData(new Movie
@@ -62,7 +70,7 @@ namespace API_Assignment_3.Models
                 Director = "Peter Jackson",
                 ImageURL = "https://www.imdb.com/title/tt1170358/mediaviewer/rm2431898112/?ref_=tt_ov_i",
                 TrailerURL = "https://www.imdb.com/video/vi2165155865?playlistId=tt1170358&ref_=tt_pr_ov_vi",
-                FranchiseId = 1,
+                FranchiseId = 2,
                 ReleaseYear = "2013",
             });
             modelBuilder.Entity<Movie>().HasData(new Movie
@@ -73,7 +81,7 @@ namespace API_Assignment_3.Models
                 Director = "Peter Jackson",
                 ImageURL = "https://www.imdb.com/title/tt0120737/mediaviewer/rm3592958976/?ref_=tt_ov_i",
                 TrailerURL = "https://www.imdb.com/video/vi2073101337?playlistId=tt0120737&ref_=tt_pr_ov_vi",
-                FranchiseId = 2,
+                FranchiseId = 3,
                 ReleaseYear = "2001",
             });
             modelBuilder.Entity<Movie>().HasData(new Movie
@@ -84,7 +92,7 @@ namespace API_Assignment_3.Models
                 Director = "Peter Jackson",
                 ImageURL = "https://www.imdb.com/title/tt0167261/mediaviewer/rm306845440/?ref_=tt_ov_i",
                 TrailerURL = "https://www.imdb.com/video/vi2073101337?playlistId=tt0167261&ref_=tt_pr_ov_vi",
-                FranchiseId = 2,
+                FranchiseId = 3,
                 ReleaseYear = "2002",
             });
             modelBuilder.Entity<Movie>().HasData(new Movie
@@ -95,7 +103,7 @@ namespace API_Assignment_3.Models
                 Director = "George Lucas",
                 ImageURL = "https://www.imdb.com/title/tt0076759/mediaviewer/rm3263717120/?ref_=tt_ov_i",
                 TrailerURL = "https://www.imdb.com/video/vi1317709849?playlistId=tt0076759&ref_=tt_ov_vi",
-                FranchiseId = 3,
+                FranchiseId = 4,
                 ReleaseYear = "1977",
             });
             modelBuilder.Entity<Movie>().HasData(new Movie
@@ -106,7 +114,7 @@ namespace API_Assignment_3.Models
                 Director = "George Lucas",
                 ImageURL = "https://www.imdb.com/title/tt0080684/mediaviewer/rm3114097664/?ref_=tt_ov_i",
                 TrailerURL = "https://www.imdb.com/video/vi221753881?playlistId=tt0080684&ref_=tt_pr_ov_vi",
-                FranchiseId = 3,
+                FranchiseId = 4,
                 ReleaseYear = "1980",
             });
             // Add some characters
@@ -120,7 +128,6 @@ namespace API_Assignment_3.Models
             modelBuilder.Entity<Character>()
                 .Property(b => b.ImageURL)
                 .HasDefaultValue(null);
-
 
             modelBuilder.Entity<Character>().HasData(new Character
             {
