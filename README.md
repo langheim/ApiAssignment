@@ -11,9 +11,9 @@ Instructions:
 Tasks: 
 
 1. Create a ASP.NET Core Web API following the instructions in Assignment 3_CSharp_Web API creation in ASP.NET Core.pdf
-2. create a free trail on Azure.
-   Create a Sql Server instance (lowest tier option)
-   Change connection String in your application.
-   Update database to see if it worked (should be data in the Azure Db)
-   Dockerize your application, build and push the image to Docker Hub.
-   Then deploy your image as an app in Azure.
+2. Create a free trail on Azure.
+3. Create a Sql Server instance (lowest tier option)
+4. Change connection String in your application.
+5. Update database to see if it worked (should be data in the Azure Db)
+6. Dockerize your application, build and push the image to Docker Hub.
+7. Then deploy your image as an app in Azure.
