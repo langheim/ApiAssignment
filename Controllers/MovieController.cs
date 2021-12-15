@@ -32,7 +32,6 @@ namespace API_Assignment_3.Controllers
             _mapper = mapper;
             _movieService = movieService;
         }
-
         /// <summary>
         /// Get all movies
         /// </summary>
@@ -43,7 +42,6 @@ namespace API_Assignment_3.Controllers
             // get list from dbcontext and automap
             return _mapper.Map<List<MovieReadDTO>>(await _context.Movies.ToListAsync());
         }
-
         /// <summary>
         /// Get movie by ID
         /// </summary>
@@ -62,7 +60,6 @@ namespace API_Assignment_3.Controllers
             // set return to automap
             return _mapper.Map<MovieReadDTO>(movie);
         }
-
         /// <summary>
         /// Get all characters in a movie by movie ID
         /// </summary>
@@ -162,14 +159,13 @@ namespace API_Assignment_3.Controllers
             // Return updated post
             return CreatedAtAction("GetMovie", new { id = movies.Id }, movie);
         }
-
         /// <summary>
         /// Delete a movie by ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Deletes a movie based on ID supplied, throws 404 Not found if ID does not exist</returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult>DeleteMovie(int id)
+        public async Task<IActionResult> DeleteMovie(int id)
         {
             // get list by ID from dbcontext
             var movie = await _context.Movies.FindAsync(id);
@@ -185,7 +181,6 @@ namespace API_Assignment_3.Controllers
             // Return noContent
             return NoContent();
         }
-
         // Check that Movie exists
         private bool MovieExists(int id)
         {

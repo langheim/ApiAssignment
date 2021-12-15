@@ -1,7 +1,5 @@
 ﻿using API_Assignment_3.Models;
 using API_Assignment_3.Models.Domain;
-using API_Assignment_3.Models.DTO;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
