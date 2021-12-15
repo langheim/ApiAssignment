@@ -57,7 +57,7 @@ namespace API_Assignment_3
                     }
 
                 });
-                // Set the comments path for the Swagger
+                // Set the comments path for Swagger
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);

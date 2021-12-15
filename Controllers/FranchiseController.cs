@@ -94,24 +94,16 @@ namespace API_Assignment_3.Controllers
         public async Task<ActionResult<FranchiseCharactersDTO>> GetCharacterByFranchise(int id)
         {
             // return a not found if id is 1 since 1 is default No franchise id
-            if (id == 1)
+            if (!FranchiseExists(id) || id == 1)
             {
                 return NotFound();
             }
-            // Check if franchiseID exists
-            if (!FranchiseExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                // get collection of franchises from dbContext
-                var movie = await _context.Movies.Where(c => c.FranchiseId == id).FirstAsync();
-                // get movie characters from the list of movie
-                await _context.Entry(movie).Collection(i => i.Characters).LoadAsync();
-                // set return to automap
-                return _mapper.Map<FranchiseCharactersDTO>(movie);
-            }
+            // get collection of franchises from dbContext
+            var movie = await _context.Movies.Where(c => c.FranchiseId == id).FirstAsync();
+            // get movie characters from the list of movie
+            await _context.Entry(movie).Collection(i => i.Characters).LoadAsync();
+            // set return to automap
+            return _mapper.Map<FranchiseCharactersDTO>(movie);
         }
 
         /// <summary>
@@ -152,12 +144,12 @@ namespace API_Assignment_3.Controllers
         }
 
         /// <summary>
-        /// Update movie in franchice
+        /// Update movies in franchice from Int list
         /// </summary>
         /// <param name="id"></param>
         /// <param name="movies"></param>
-        /// <returns>Updates a movie based on franchise ID supplied</returns>
-        [HttpPut("{id}/movieUpdate")]
+        /// <returns>Updates movies based on franchise ID and takes Int list of movies to update, returns Bad Request if nothing found</returns>
+        [HttpPut("{id}/moviesUpdate")]
         public async Task<IActionResult> MovieFranchiseUpdate(int id, List<int> movies)
         {
             // Check ID and movie cound is valid

@@ -14,13 +14,11 @@ namespace API_Assignment_3.Services
         {
             _context = context;
         }
-
         // Moved the UpdateCharactersInMovie to services to clean up dbcontext code in main controller
         public async Task UpdateCharacterInMovie(int id, List<int> characters)
         {
             // Get a list of characters based on movie ID
             Movie charactersInMovie = await _context.Movies.Include(c => c.Characters).Where(c => c.Id == id).FirstAsync();
-
             // Check for character id in characters
             foreach (int characterId in characters)
             {
@@ -34,7 +32,6 @@ namespace API_Assignment_3.Services
             }
             //Update changes and return
             await _context.SaveChangesAsync();
-
         }
     }
 }

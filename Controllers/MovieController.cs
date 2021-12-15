@@ -26,7 +26,6 @@ namespace API_Assignment_3.Controllers
         private readonly MovieService _movieService;
         // Add automapper
         private readonly IMapper _mapper;
-
         public MovieController(MediaDbContext context, IMapper mapper, MovieService movieService)
         {
             _context = context;
@@ -121,12 +120,12 @@ namespace API_Assignment_3.Controllers
             return NoContent();
         }
         /// <summary>
-        /// Update character in a movie
+        /// Update characters in a movie from Int list
         /// </summary>
         /// <param name="id"></param>
         /// <param name="characters"></param>
-        /// <returns>Update a character in a movie based on ID supplied from Int List, throws 404 Not found if ID does not exist. Bad Request if error</returns>
-        [HttpPut("{id}/characterUpdate")]
+        /// <returns>Update characters in a movie based on ID supplied from Int List, throws 404 Not found if ID does not exist. Bad Request if error</returns>
+        [HttpPut("{id}/charactersUpdate")]
         public async Task<IActionResult> UpdateCharactersInMovie(int id, List<int> characters)
         {
             // Check if movie ID exists
@@ -141,13 +140,11 @@ namespace API_Assignment_3.Controllers
             }
             catch (Exception e)
             {
-
                 return BadRequest(e.Message);
             }
             // if nothing then return NoContent
             return NoContent();
         }
-
         /// <summary>
         /// Add a new movie
         /// </summary>
@@ -170,9 +167,9 @@ namespace API_Assignment_3.Controllers
         /// Delete a movie by ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Deletes a movie based on ID supplied<, throws 404 Not found if ID does not exist/returns>
+        /// <returns>Deletes a movie based on ID supplied, throws 404 Not found if ID does not exist</returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMovie(int id)
+        public async Task<IActionResult>DeleteMovie(int id)
         {
             // get list by ID from dbcontext
             var movie = await _context.Movies.FindAsync(id);
